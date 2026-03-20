@@ -23,7 +23,7 @@ const syne = Syne({
 export const metadata: Metadata = {
   title: "KytePush — Intelligent Apps for Real Life",
   description:
-    "KytePush builds AI-forward applications that solve real problems. Smart tools, thoughtfully designed.",
+    "KytePush builds AI-forward applications that solve real problems. Meet Jarvis — your personal AI assistant.",
 };
 
 export default function RootLayout({
@@ -56,14 +56,14 @@ export default function RootLayout({
                 Home
               </Link>
               <Link
-                href="/golf"
+                href="/jarvis"
                 className="hover-underline hover:text-foreground transition-colors hidden sm:block"
               >
-                Golf Tracker
+                Jarvis
               </Link>
               <Link
-                href="/golf"
-                className="inline-flex items-center gap-2 px-5 py-2 border-2 border-border bg-foreground text-background text-sm font-semibold hover:-translate-y-0.5 hover:shadow-[4px_4px_0_0_#a47764] transition-all duration-200"
+                href="/jarvis"
+                className="inline-flex items-center gap-2 px-5 py-2 border-2 border-border bg-foreground text-background text-sm font-semibold hover:-translate-y-0.5 hover:shadow-[4px_4px_0_0_#7c3aed] transition-all duration-200"
               >
                 Get Started
               </Link>
@@ -92,10 +92,12 @@ export default function RootLayout({
                 <div>
                   <h4 className="font-semibold mb-2 text-xs uppercase tracking-wider">Apps</h4>
                   <div className="flex flex-col gap-1.5 text-muted text-sm">
+                    <Link href="/jarvis" className="hover-underline hover:text-foreground transition-colors w-fit">
+                      Jarvis
+                    </Link>
                     <Link href="/golf" className="hover-underline hover:text-foreground transition-colors w-fit">
                       Golf Tracker
                     </Link>
-                    <span className="text-muted/40">More soon</span>
                   </div>
                 </div>
                 <div>
