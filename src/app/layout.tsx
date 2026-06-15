@@ -21,9 +21,9 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "KytePush — Intelligent Apps for Real Life",
+  title: "KytePush — A Studio of Intelligent Apps",
   description:
-    "KytePush builds AI-forward applications that solve real problems. Meet Jarvis — your personal AI assistant.",
+    "KytePush is a studio shipping a family of AI-native apps across news, commerce, travel, gaming, finance, and sport. One studio, an entire portfolio.",
 };
 
 export default function RootLayout({
@@ -50,10 +50,10 @@ export default function RootLayout({
             </Link>
             <div className="flex items-center gap-6 text-sm font-medium text-muted">
               <Link
-                href="/"
+                href="/#apps"
                 className="hover-underline hover:text-foreground transition-colors hidden sm:block"
               >
-                Home
+                Apps
               </Link>
               <Link
                 href="/jarvis"
@@ -62,10 +62,10 @@ export default function RootLayout({
                 Jarvis
               </Link>
               <Link
-                href="/jarvis"
+                href="/#apps"
                 className="inline-flex items-center gap-2 px-5 py-2 border-2 border-border bg-foreground text-background text-sm font-semibold hover:-translate-y-0.5 hover:shadow-[4px_4px_0_0_#7c3aed] transition-all duration-200"
               >
-                Get Started
+                Explore
               </Link>
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function RootLayout({
                   <span className="font-display font-bold text-sm">KytePush</span>
                 </div>
                 <p className="text-xs text-muted max-w-xs">
-                  Intelligent apps for real life. AI-forward, human-centered.
+                  A studio of intelligent apps. AI-native, human-centered.
                 </p>
               </div>
               <div className="flex gap-10 text-sm">
@@ -95,16 +95,25 @@ export default function RootLayout({
                     <Link href="/jarvis" className="hover-underline hover:text-foreground transition-colors w-fit">
                       Jarvis
                     </Link>
-                    <Link href="/golf" className="hover-underline hover:text-foreground transition-colors w-fit">
-                      Golf Tracker
+                    <Link href="/#apps" className="hover-underline hover:text-foreground transition-colors w-fit">
+                      Fault Lines
+                    </Link>
+                    <Link href="/#apps" className="hover-underline hover:text-foreground transition-colors w-fit">
+                      Curated
+                    </Link>
+                    <Link href="/#apps" className="hover-underline hover:text-foreground transition-colors w-fit">
+                      See all 10 →
                     </Link>
                   </div>
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2 text-xs uppercase tracking-wider">Company</h4>
                   <div className="flex flex-col gap-1.5 text-muted text-sm">
+                    <Link href="/#apps" className="hover-underline hover:text-foreground transition-colors w-fit">
+                      The lineup
+                    </Link>
                     <Link href="/" className="hover-underline hover:text-foreground transition-colors w-fit">
-                      About
+                      Our direction
                     </Link>
                   </div>
                 </div>
