@@ -95,12 +95,9 @@ export default function RootLayout({
                     <Link href="/jarvis" className="hover-underline hover:text-foreground transition-colors w-fit">
                       Jarvis
                     </Link>
-                    <Link href="/#apps" className="hover-underline hover:text-foreground transition-colors w-fit">
-                      Fault Lines
-                    </Link>
-                    <Link href="/#apps" className="hover-underline hover:text-foreground transition-colors w-fit">
+                    <a href="https://curated.kytepush.com" className="hover-underline hover:text-foreground transition-colors w-fit">
                       Curated
-                    </Link>
+                    </a>
                     <Link href="/#apps" className="hover-underline hover:text-foreground transition-colors w-fit">
                       See all 10 →
                     </Link>

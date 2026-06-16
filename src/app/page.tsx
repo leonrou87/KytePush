@@ -1,16 +1,89 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { ScrollReveal } from "./components/ScrollReveal";
 
 type Status = "Live" | "Beta" | "Building" | "Research" | "Soon";
+type Color = "violet" | "sky" | "emerald" | "amber" | "rose" | "accent" | "teal";
 
 type App = {
   name: string;
   category: string;
   description: string;
-  href: string;
+  href: string | null; // null = deployed-but-not-public / not yet shipped → no link
   status: Status;
-  color: "violet" | "sky" | "emerald" | "amber" | "rose" | "accent" | "teal";
+  color: Color;
+  icon: ReactNode;
   featured?: boolean;
+};
+
+/* ── Brand marks: one distinct geometric logo per app ───────────────── */
+const I = {
+  jarvis: (
+    <path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2L12 2z" />
+  ),
+  faultlines: (
+    <>
+      <path d="M12 3v8" />
+      <path d="M12 11l-6 10" />
+      <path d="M12 11l6 10" />
+      <circle cx="12" cy="11" r="1.6" fill="currentColor" stroke="none" />
+    </>
+  ),
+  curated: (
+    <>
+      <path d="M12 3l9 5-9 5-9-5 9-5z" />
+      <path d="M3 12l9 5 9-5" />
+      <path d="M3 16l9 5 9-5" />
+    </>
+  ),
+  stitch: (
+    <>
+      <path d="M5 19c4 0 4-14 8-14s4 7 6 7" />
+      <circle cx="5" cy="19" r="1.7" fill="currentColor" stroke="none" />
+      <circle cx="19" cy="12" r="1.7" fill="currentColor" stroke="none" />
+    </>
+  ),
+  clout: (
+    <>
+      <path d="M12 3l8.5 9-8.5 9-8.5-9L12 3z" />
+      <path d="M8.5 13l2.5-2.5L13 13l2.5-3" />
+    </>
+  ),
+  yieldmap: (
+    <>
+      <path d="M4 20V14" />
+      <path d="M10 20V9" />
+      <path d="M16 20V12" />
+      <path d="M4 9l6-4 6 3 4-4" />
+    </>
+  ),
+  foundry: (
+    <>
+      <rect x="3" y="3" width="18" height="18" rx="3" />
+      <path d="M10 8.5l6 3.5-6 3.5v-7z" fill="currentColor" stroke="none" />
+    </>
+  ),
+  momentum: (
+    <>
+      <path d="M3 17l6-6 4 4 8-9" />
+      <path d="M21 6v5" />
+      <path d="M21 6h-5" />
+    </>
+  ),
+  edge: (
+    <>
+      <path d="M12 3l9 9-9 9-9-9 9-9z" />
+      <path d="M6 12h12" />
+      <path d="M12 6v12" />
+    </>
+  ),
+  golf: (
+    <>
+      <path d="M8 3v15" />
+      <path d="M8 4l9 3-9 3" />
+      <ellipse cx="12" cy="20" rx="6" ry="1.6" />
+    </>
+  ),
 };
 
 const apps: App[] = [
@@ -22,193 +95,194 @@ const apps: App[] = [
     href: "/jarvis",
     status: "Live",
     color: "violet",
+    icon: I.jarvis,
     featured: true,
+  },
+  {
+    name: "Curated",
+    category: "Commerce",
+    description:
+      "A personalized, editorial styling & shopping companion. Describe what you need and watch a coherent look assemble on screen.",
+    href: "https://curated.kytepush.com",
+    status: "Live",
+    color: "accent",
+    icon: I.curated,
+  },
+  {
+    name: "Golf Tracker",
+    category: "Sport",
+    description:
+      "Smart scorekeeping that actually helps your game. Track rounds, spot patterns, and play better with AI insight.",
+    href: "/golf",
+    status: "Soon",
+    color: "emerald",
+    icon: I.golf,
   },
   {
     name: "Fault Lines",
     category: "News",
     description:
       "Autonomous, unbiased news. Rewrites the day's top stories in neutral prose — and maps exactly where the left and the right split.",
-    href: "https://faultlines.kytepush.com",
+    href: null,
     status: "Building",
     color: "sky",
-  },
-  {
-    name: "Curated",
-    category: "Commerce",
-    description:
-      "A personalized, editorial styling & shopping companion. Describe what you need in plain language and watch a coherent look assemble on screen.",
-    href: "https://curated.kytepush.com",
-    status: "Building",
-    color: "accent",
+    icon: I.faultlines,
   },
   {
     name: "Stitch",
     category: "Travel",
     description:
-      "AI travel itinerary builder. Pick the real places you actually want; Stitch arranges them into a coherent, day-by-day trip that's yours.",
-    href: "https://stitch.kytepush.com",
+      "AI travel itinerary builder. Pick the real places you want; Stitch arranges them into a coherent, day-by-day trip that's yours.",
+    href: null,
     status: "Building",
     color: "emerald",
+    icon: I.stitch,
+  },
+  {
+    name: "Edge",
+    category: "Sport",
+    description:
+      "An MLB mid-game win predictor. A base-out simulation engine models the rest of the game to surface a real, live betting edge.",
+    href: null,
+    status: "Research",
+    color: "sky",
+    icon: I.edge,
   },
   {
     name: "CLOUT",
     category: "Game",
     description:
-      "A digital collectible card game built on a live cultural-relevance index. No likeness, closed-loop economy, premium generative art.",
-    href: "https://clout.kytepush.com",
+      "A collectible card game built on a live cultural-relevance index. No likeness, closed-loop economy, premium generative art.",
+    href: null,
     status: "Building",
     color: "rose",
+    icon: I.clout,
   },
   {
     name: "YieldMap",
     category: "Fintech",
     description:
       "Risk-adjusted yield intelligence for Polymarket & Kalshi liquidity rewards — your daily farming playbook, ranked by RAYS.",
-    href: "https://yieldmap.kytepush.com",
-    status: "Beta",
+    href: null,
+    status: "Soon",
     color: "amber",
+    icon: I.yieldmap,
   },
   {
     name: "Foundry",
     category: "Creative",
     description:
-      "A calm cockpit for making a casual mobile game with you in the loop the whole way: invent, build, play it in seconds, steer, ship.",
-    href: "https://foundry.kytepush.com",
+      "A calm cockpit for making a casual mobile game with you in the loop: invent, build, play it in seconds, steer, ship.",
+    href: null,
     status: "Building",
     color: "violet",
+    icon: I.foundry,
   },
   {
     name: "Momentum",
     category: "Trading",
     description:
       "A local-first intraday momentum research, signal, and execution system. Paper-trade the strategy — or deliberately arm it live.",
-    href: "https://momentum.kytepush.com",
+    href: null,
     status: "Research",
     color: "teal",
-  },
-  {
-    name: "Edge",
-    category: "Sports",
-    description:
-      "An MLB mid-game win predictor. A base-out simulation engine models the rest of the game to surface a real, live betting edge.",
-    href: "https://edge.kytepush.com",
-    status: "Research",
-    color: "sky",
-  },
-  {
-    name: "Golf Tracker",
-    category: "Sports",
-    description:
-      "Smart scorekeeping that actually helps your game. Track rounds, spot patterns, and play better with AI insight.",
-    href: "/golf",
-    status: "Soon",
-    color: "emerald",
+    icon: I.momentum,
   },
 ];
 
-const shadowMap: Record<App["color"], string> = {
-  violet: "hover:shadow-[6px_6px_0_0_#7c3aed]",
-  sky: "hover:shadow-[6px_6px_0_0_#0ea5e9]",
-  emerald: "hover:shadow-[6px_6px_0_0_#059669]",
-  amber: "hover:shadow-[6px_6px_0_0_#d97706]",
-  rose: "hover:shadow-[6px_6px_0_0_#e11d48]",
-  accent: "hover:shadow-[6px_6px_0_0_#a47764]",
+/* ── Color maps (static class strings so Tailwind keeps them) ────────── */
+const text: Record<Color, string> = {
+  violet: "text-violet", sky: "text-sky", emerald: "text-emerald",
+  amber: "text-amber", rose: "text-rose", accent: "text-accent", teal: "text-teal",
+};
+const tint: Record<Color, string> = {
+  violet: "bg-violet/10", sky: "bg-sky/10", emerald: "bg-emerald/10",
+  amber: "bg-amber/10", rose: "bg-rose/10", accent: "bg-accent/10", teal: "bg-teal/10",
+};
+const hoverShadow: Record<Color, string> = {
+  violet: "hover:shadow-[6px_6px_0_0_#7c3aed]", sky: "hover:shadow-[6px_6px_0_0_#0ea5e9]",
+  emerald: "hover:shadow-[6px_6px_0_0_#059669]", amber: "hover:shadow-[6px_6px_0_0_#d97706]",
+  rose: "hover:shadow-[6px_6px_0_0_#e11d48]", accent: "hover:shadow-[6px_6px_0_0_#a47764]",
   teal: "hover:shadow-[6px_6px_0_0_#015770]",
 };
-
-const textHoverMap: Record<App["color"], string> = {
-  violet: "group-hover:text-violet",
-  sky: "group-hover:text-sky",
-  emerald: "group-hover:text-emerald",
-  amber: "group-hover:text-amber",
-  rose: "group-hover:text-rose",
-  accent: "group-hover:text-accent",
+const hoverText: Record<Color, string> = {
+  violet: "group-hover:text-violet", sky: "group-hover:text-sky", emerald: "group-hover:text-emerald",
+  amber: "group-hover:text-amber", rose: "group-hover:text-rose", accent: "group-hover:text-accent",
   teal: "group-hover:text-teal",
 };
-
-const dotMap: Record<App["color"], string> = {
-  violet: "bg-violet",
-  sky: "bg-sky",
-  emerald: "bg-emerald",
-  amber: "bg-amber",
-  rose: "bg-rose",
-  accent: "bg-accent",
-  teal: "bg-teal",
-};
-
 const statusStyle: Record<Status, string> = {
-  Live: "bg-violet text-white border-border",
-  Beta: "bg-emerald text-white border-border",
-  Building: "bg-cream text-foreground border-border",
-  Research: "bg-surface text-muted border-border",
-  Soon: "bg-surface text-muted border-border",
+  Live: "bg-emerald text-white",
+  Beta: "bg-violet text-white",
+  Building: "bg-cream text-foreground",
+  Research: "bg-surface text-muted",
+  Soon: "bg-surface text-muted",
 };
+
+function BrandIcon({ app, size = "lg" }: { app: App; size?: "lg" | "sm" }) {
+  const dim = size === "lg" ? "w-14 h-14" : "w-11 h-11";
+  const svg = size === "lg" ? "w-7 h-7" : "w-6 h-6";
+  return (
+    <div className={`${dim} shrink-0 border-2 border-border ${tint[app.color]} ${text[app.color]} flex items-center justify-center transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105`}>
+      <svg className={svg} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round">
+        {app.icon}
+      </svg>
+    </div>
+  );
+}
 
 function AppCard({ app }: { app: App }) {
-  const isLive = app.status === "Live" || app.href.startsWith("/");
+  const live = app.href !== null;
   const inner = (
     <>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2.5">
-          <span className={`w-2.5 h-2.5 ${dotMap[app.color]} rounded-full ${isLive ? "animate-pulse" : ""}`} />
-          <span className="font-mono text-[11px] uppercase tracking-widest text-muted">
-            {app.category}
-          </span>
-        </div>
-        <span className={`font-mono text-[10px] font-semibold px-2.5 py-1 border-2 ${statusStyle[app.status]}`}>
+      <div className="flex items-start justify-between mb-5">
+        <BrandIcon app={app} size={app.featured ? "lg" : "sm"} />
+        <span className={`font-mono text-[10px] font-semibold px-2.5 py-1 border-2 border-border ${statusStyle[app.status]}`}>
           {app.status}
         </span>
       </div>
-      <h3 className={`font-display text-2xl font-extrabold tracking-tight mb-2 transition-colors duration-200 ${textHoverMap[app.color]}`}>
-        {app.name}
-      </h3>
+      <div className="flex items-center gap-2 mb-1.5">
+        <h3 className={`font-display text-2xl font-extrabold tracking-tight transition-colors duration-200 ${hoverText[app.color]}`}>
+          {app.name}
+        </h3>
+        <span className="font-mono text-[10px] uppercase tracking-widest text-muted/70 mt-1">
+          {app.category}
+        </span>
+      </div>
       <p className="text-sm text-muted leading-relaxed">{app.description}</p>
-      <div className="mt-5 flex items-center gap-2 text-sm font-semibold text-muted group-hover:text-foreground transition-colors">
-        <span>{isLive ? "Open" : "Preview soon"}</span>
-        <svg
-          className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2.5}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg>
+      <div className={`mt-5 flex items-center gap-2 text-sm font-semibold ${live ? "text-foreground" : "text-muted/50"}`}>
+        <span>{live ? "Open app" : "In the works"}</span>
+        {live && (
+          <svg className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        )}
       </div>
     </>
   );
 
-  const className = `group block h-full p-7 border-2 border-border bg-background transition-all duration-200 ${
-    isLive
-      ? `hover:-translate-y-1 ${shadowMap[app.color]} active:translate-y-0 active:shadow-none`
-      : "opacity-95"
-  } ${app.featured ? "sm:col-span-2" : ""}`;
-
-  if (isLive) {
+  const base = `group block h-full p-7 border-2 border-border bg-background transition-all duration-200 ${app.featured ? "sm:col-span-2" : ""}`;
+  if (live) {
     return (
-      <Link href={app.href} className={className}>
+      <Link href={app.href!} className={`${base} hover:-translate-y-1 ${hoverShadow[app.color]} active:translate-y-0 active:shadow-none`}>
         {inner}
       </Link>
     );
   }
-  return <div className={`${className} cursor-default`}>{inner}</div>;
+  return <div className={`${base} cursor-default opacity-[0.97]`}>{inner}</div>;
 }
 
 export default function Home() {
+  const liveCount = apps.filter((a) => a.href !== null).length;
   return (
     <div className="flex flex-col">
       {/* Hero */}
       <section className="min-h-[92vh] flex items-center relative overflow-hidden">
-        {/* Animated background gradients */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-10 right-[8%] w-96 h-96 bg-violet/10 rounded-full blur-3xl animate-float" />
           <div className="absolute bottom-0 left-[2%] w-[28rem] h-[28rem] bg-sky/10 rounded-full blur-3xl animate-float-delay" />
           <div className="absolute top-[35%] left-[45%] w-72 h-72 bg-emerald/10 rounded-full blur-3xl animate-float" />
           <div className="absolute bottom-[25%] right-[28%] w-56 h-56 bg-amber/10 rounded-full blur-2xl animate-float-delay" />
         </div>
-
-        {/* Floating geometric decorations */}
         <div className="absolute top-24 right-12 w-24 h-24 border-2 border-violet/20 rotate-12 animate-float hidden lg:block" />
         <div className="absolute top-44 right-44 w-6 h-6 bg-sky/30 rounded-full animate-orbit hidden lg:block" />
         <div className="absolute bottom-28 left-16 w-16 h-16 border-2 border-emerald/20 rounded-full animate-float-delay hidden lg:block" />
@@ -229,9 +303,9 @@ export default function Home() {
             <h1 className="font-display text-5xl sm:text-7xl lg:text-[5.75rem] font-extrabold tracking-tight leading-[0.95] mb-6 animate-letter-spread">
               One studio.
               <br />
-              An entire{" "}
+              A whole{" "}
               <span className="italic relative">
-                <span className="animate-gradient-text">portfolio</span>
+                <span className="animate-gradient-text">family</span>
                 <span className="absolute -bottom-1 left-0 w-full h-1.5 bg-violet/30 animate-line-grow" />
               </span>
               <br />
@@ -239,36 +313,40 @@ export default function Home() {
             </h1>
 
             <p className="text-base sm:text-lg text-muted max-w-2xl leading-relaxed mb-4 animate-reveal-delay-2">
-              KytePush has been rebuilt from the ground up. We&apos;re no longer a
-              single product — we&apos;re a studio shipping a family of AI-native
-              apps across news, commerce, travel, gaming, finance, and sport. Each
-              one solves a real problem exceptionally well.
+              KytePush has been rebuilt from the ground up. We&apos;re not a single
+              product — we&apos;re a studio shipping a family of AI-native apps
+              across news, commerce, travel, gaming, finance, and sport. Each one
+              its own brand. All of them under one roof.
             </p>
 
             <p className="text-sm text-muted/70 max-w-md mb-8 animate-reveal-delay-3">
-              Ten apps and counting — built fast, built with intent, built to matter.
+              Ten brands and counting — built fast, built with intent, built to matter.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-start gap-3 animate-reveal-delay-3">
-              <a
-                href="#apps"
-                className="group inline-flex items-center gap-3 px-6 py-3 border-2 border-border bg-foreground text-background font-semibold text-sm hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#7c3aed] active:translate-y-0 active:shadow-none transition-all duration-200"
-              >
-                Explore the lineup
-                <svg
-                  className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2.5}
+            {/* Brand-mark lockup row */}
+            <div className="flex flex-wrap items-center gap-2.5 mb-8 animate-reveal-delay-3">
+              {apps.slice(0, 8).map((app) => (
+                <div
+                  key={app.name}
+                  title={app.name}
+                  className={`w-10 h-10 border-2 border-border ${tint[app.color]} ${text[app.color]} flex items-center justify-center hover:-translate-y-0.5 transition-transform`}
                 >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round">
+                    {app.icon}
+                  </svg>
+                </div>
+              ))}
+              <span className="font-mono text-xs text-muted ml-1">+ more</span>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-start gap-3 animate-reveal-delay-3">
+              <a href="#apps" className="group inline-flex items-center gap-3 px-6 py-3 border-2 border-border bg-foreground text-background font-semibold text-sm hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#7c3aed] active:translate-y-0 active:shadow-none transition-all duration-200">
+                Explore the family
+                <svg className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </a>
-              <Link
-                href="/jarvis"
-                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-border text-foreground font-semibold text-sm hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#1a1a1a] active:translate-y-0 active:shadow-none transition-all duration-200"
-              >
+              <Link href="/jarvis" className="inline-flex items-center gap-2 px-6 py-3 border-2 border-border text-foreground font-semibold text-sm hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#1a1a1a] active:translate-y-0 active:shadow-none transition-all duration-200">
                 Meet Jarvis
               </Link>
             </div>
@@ -281,20 +359,13 @@ export default function Home() {
         <div className="animate-marquee whitespace-nowrap flex gap-8 text-sm font-mono text-muted">
           {Array.from({ length: 3 }).map((_, i) => (
             <span key={i} className="flex gap-8 items-center">
-              <span>NEWS</span>
-              <span className="text-violet text-xs">◆</span>
-              <span>COMMERCE</span>
-              <span className="text-sky text-xs">◆</span>
-              <span>TRAVEL</span>
-              <span className="text-emerald text-xs">◆</span>
-              <span>GAMING</span>
-              <span className="text-amber text-xs">◆</span>
-              <span>FINTECH</span>
-              <span className="text-rose text-xs">◆</span>
-              <span>SPORT</span>
-              <span className="text-violet text-xs">◆</span>
-              <span>AI-NATIVE</span>
-              <span className="text-sky text-xs">◆</span>
+              <span>NEWS</span><span className="text-violet text-xs">◆</span>
+              <span>COMMERCE</span><span className="text-sky text-xs">◆</span>
+              <span>TRAVEL</span><span className="text-emerald text-xs">◆</span>
+              <span>GAMING</span><span className="text-amber text-xs">◆</span>
+              <span>FINTECH</span><span className="text-rose text-xs">◆</span>
+              <span>SPORT</span><span className="text-violet text-xs">◆</span>
+              <span>AI-NATIVE</span><span className="text-sky text-xs">◆</span>
             </span>
           ))}
         </div>
@@ -329,13 +400,12 @@ export default function Home() {
                 <p className="text-base">
                   AI changed what a small team can build — and how fast. So we
                   changed with it. Instead of betting everything on a single
-                  product, we&apos;re building a portfolio of focused, intelligent
+                  product, we&apos;re building a family of focused, intelligent
                   apps and shipping them at a pace that wasn&apos;t possible a year
                   ago.
                 </p>
                 <p className="text-base">
-                  Each app stands on its own — its own product, its own audience,
-                  its own home at{" "}
+                  Each app is its own brand with its own home at{" "}
                   <span className="font-mono text-sm text-foreground">name.kytepush.com</span>.
                   Together they&apos;re a bet on a simple idea: thoughtful software,
                   made quickly, that genuinely helps.
@@ -350,25 +420,17 @@ export default function Home() {
             </ScrollReveal>
           </div>
 
-          {/* Stats band */}
           <ScrollReveal className="mt-16" stagger>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-0 border-2 border-border">
               {[
-                { value: "10", label: "Apps in flight", color: "text-violet" },
+                { value: "10", label: "Brands in flight", color: "text-violet" },
                 { value: "6", label: "Categories", color: "text-sky" },
-                { value: "1", label: "Studio", color: "text-emerald" },
+                { value: String(liveCount), label: "Live now", color: "text-emerald" },
                 { value: "∞", label: "On the way", color: "text-amber" },
               ].map((stat, i) => (
-                <div
-                  key={stat.label}
-                  className={`p-7 text-center ${i < 3 ? "border-r-2 border-border" : ""} ${i < 2 ? "border-b-2 sm:border-b-0" : ""}`}
-                >
-                  <div className={`font-display text-4xl sm:text-5xl font-extrabold ${stat.color} mb-1`}>
-                    {stat.value}
-                  </div>
-                  <div className="font-mono text-[11px] uppercase tracking-widest text-muted">
-                    {stat.label}
-                  </div>
+                <div key={stat.label} className={`p-7 text-center ${i < 3 ? "border-r-2 border-border" : ""} ${i < 2 ? "border-b-2 sm:border-b-0" : ""}`}>
+                  <div className={`font-display text-4xl sm:text-5xl font-extrabold ${stat.color} mb-1`}>{stat.value}</div>
+                  <div className="font-mono text-[11px] uppercase tracking-widest text-muted">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -376,34 +438,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Apps — the jump-off */}
+      {/* Apps — the family */}
       <section id="apps" className="py-16 sm:py-24 bg-cream border-b-2 border-border">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal>
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
               <div>
                 <span className="font-mono text-xs text-muted mb-3 block uppercase tracking-widest">
-                  002 — The lineup
+                  002 — The family
                 </span>
                 <h2 className="font-display text-4xl sm:text-6xl font-extrabold tracking-tight">
-                  Pick a door.
+                  Ten brands. One roof.
                 </h2>
               </div>
               <p className="text-muted max-w-sm text-sm leading-relaxed">
-                Every app in the KytePush portfolio, in one place. Some are live,
-                some are days away — all of them are being built right now.
+                Every brand in the KytePush family. The live ones open right now —
+                the rest are days from launch. Watch this grid light up.
               </p>
             </div>
           </ScrollReveal>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {apps.map((app, i) => (
-              <ScrollReveal
-                key={app.name}
-                delay={(i % 3) * 100}
-                animation="scale"
-                className={app.featured ? "sm:col-span-2" : ""}
-              >
+              <ScrollReveal key={app.name} delay={(i % 3) * 100} animation="scale" className={app.featured ? "sm:col-span-2" : ""}>
                 <AppCard app={app} />
               </ScrollReveal>
             ))}
@@ -424,21 +481,12 @@ export default function Home() {
             <span className="italic animate-gradient-text">beginning</span>
           </h2>
           <p className="text-muted max-w-lg mx-auto mb-10 text-base">
-            Ten apps today. More every month. KytePush is building the future of
+            Ten brands today. More every month. KytePush is building the future of
             intelligent software — one focused product at a time.
           </p>
-          <Link
-            href="/jarvis"
-            className="group inline-flex items-center gap-3 px-8 py-4 border-2 border-border bg-foreground text-background font-semibold text-sm hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#7c3aed] active:translate-y-0 active:shadow-none transition-all duration-200"
-          >
+          <Link href="/jarvis" className="group inline-flex items-center gap-3 px-8 py-4 border-2 border-border bg-foreground text-background font-semibold text-sm hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#7c3aed] active:translate-y-0 active:shadow-none transition-all duration-200">
             Start with Jarvis
-            <svg
-              className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2.5}
-            >
+            <svg className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </Link>
