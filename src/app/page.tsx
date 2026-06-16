@@ -1,9 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ScrollReveal } from "./components/ScrollReveal";
+import { StarField } from "./components/StarField";
 
-type Status = "Live" | "In studio" | "Soon";
-type Color = "violet" | "sky" | "emerald" | "amber" | "rose" | "accent" | "teal";
+type Status = "Live" | "In dev" | "Soon";
+type Color = "accent" | "violet" | "sky" | "emerald" | "amber" | "rose" | "teal";
 
 type App = {
   name: string;
@@ -16,13 +17,12 @@ type App = {
   featured?: boolean;
 };
 
-/* ── House marks ─────────────────────────────────────────────────────── */
 function Kite({ className = "w-6 h-6" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round">
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinejoin="round" strokeLinecap="round">
       <path d="M12 2.5 L20 9 L12 21.5 L4 9 Z" />
-      <path d="M12 2.5 V21.5 M4 9 H20" strokeWidth={1} opacity="0.6" />
-      <path d="M12 21.5 l-2.4 1.6 M12 21.5 l2.4 1.6" strokeWidth={1} opacity="0.5" />
+      <path d="M12 2.5 V21.5 M4 9 H20" strokeWidth={0.9} opacity="0.55" />
+      <path d="M12 21.5 l-2.2 1.5 M12 21.5 l2.2 1.5" strokeWidth={0.9} opacity="0.5" />
     </svg>
   );
 }
@@ -41,74 +41,69 @@ const I = {
 };
 
 const apps: App[] = [
-  { name: "Jarvis", category: "Intelligence", line: "The assistant that learns your mind. The front door to the house.", href: "/jarvis", status: "Live", color: "violet", icon: I.jarvis, featured: true },
-  { name: "Curated", category: "Commerce", line: "Editorial styling that assembles a look from a sentence.", href: "https://curated.kytepush.com", status: "Live", color: "accent", icon: I.curated },
-  { name: "Fault Lines", category: "Media", line: "Unbiased news that maps where the country splits — and why.", href: "https://faultlines.kytepush.com", status: "Live", color: "sky", icon: I.faultlines },
-  { name: "Stitch", category: "Travel", line: "A trip that's actually yours, arranged day by day.", href: "https://stitch.kytepush.com", status: "Live", color: "emerald", icon: I.stitch },
-  { name: "Edge", category: "Sport", line: "A live MLB model that simulates the rest of the game.", href: "https://edge.kytepush.com", status: "Live", color: "sky", icon: I.edge },
-  { name: "Golf", category: "Sport", line: "Scorekeeping that quietly makes you a better player.", href: "/golf", status: "Soon", color: "emerald", icon: I.golf },
-  { name: "CLOUT", category: "Play", line: "A collectible card game built on live cultural momentum.", href: null, status: "In studio", color: "rose", icon: I.clout },
-  { name: "YieldMap", category: "Finance", line: "Risk-adjusted yield intelligence for prediction markets.", href: null, status: "In studio", color: "amber", icon: I.yieldmap },
-  { name: "Foundry", category: "Creative", line: "Make a game by talking to it — invent, play, ship.", href: null, status: "In studio", color: "violet", icon: I.foundry },
-  { name: "Momentum", category: "Markets", line: "A local-first intraday momentum research desk.", href: null, status: "In studio", color: "teal", icon: I.momentum },
+  { name: "JARVIS", category: "Intelligence", line: "An assistant that learns your mind. The command center for everything we build.", href: "/jarvis", status: "Live", color: "accent", icon: I.jarvis, featured: true },
+  { name: "CURATED", category: "Commerce", line: "Editorial styling that assembles a full look from a single sentence.", href: "https://curated.kytepush.com", status: "Live", color: "violet", icon: I.curated },
+  { name: "FAULT LINES", category: "Media", line: "Autonomous, unbiased news that maps exactly where the country splits.", href: "https://faultlines.kytepush.com", status: "Live", color: "sky", icon: I.faultlines },
+  { name: "STITCH", category: "Travel", line: "A trip that's actually yours — arranged, paced, day by day.", href: "https://stitch.kytepush.com", status: "Live", color: "emerald", icon: I.stitch },
+  { name: "EDGE", category: "Sport", line: "A live MLB model simulating the rest of the game, pitch by pitch.", href: "https://edge.kytepush.com", status: "Live", color: "sky", icon: I.edge },
+  { name: "GOLF", category: "Sport", line: "Scorekeeping that quietly engineers a better player.", href: "/golf", status: "Soon", color: "emerald", icon: I.golf },
+  { name: "CLOUT", category: "Play", line: "A collectible card game built on a live cultural-momentum index.", href: null, status: "In dev", color: "rose", icon: I.clout },
+  { name: "YIELDMAP", category: "Finance", line: "Risk-adjusted yield intelligence for prediction-market liquidity.", href: null, status: "In dev", color: "amber", icon: I.yieldmap },
+  { name: "FOUNDRY", category: "Creative", line: "Build a game by talking to it — invent, play, ship in minutes.", href: null, status: "In dev", color: "violet", icon: I.foundry },
+  { name: "MOMENTUM", category: "Markets", line: "A local-first intraday momentum research and execution desk.", href: null, status: "In dev", color: "teal", icon: I.momentum },
 ];
 
-const text: Record<Color, string> = { violet:"text-violet", sky:"text-sky", emerald:"text-emerald", amber:"text-amber", rose:"text-rose", accent:"text-accent", teal:"text-teal" };
-const tint: Record<Color, string> = { violet:"bg-violet/10", sky:"bg-sky/10", emerald:"bg-emerald/10", amber:"bg-amber/10", rose:"bg-rose/10", accent:"bg-accent/10", teal:"bg-teal/10" };
-const ring: Record<Color, string> = { violet:"border-violet/25", sky:"border-sky/25", emerald:"border-emerald/25", amber:"border-amber/25", rose:"border-rose/25", accent:"border-accent/25", teal:"border-teal/25" };
-const hoverText: Record<Color, string> = { violet:"group-hover:text-violet", sky:"group-hover:text-sky", emerald:"group-hover:text-emerald", amber:"group-hover:text-amber", rose:"group-hover:text-rose", accent:"group-hover:text-accent", teal:"group-hover:text-teal" };
-const hoverBorder: Record<Color, string> = { violet:"hover:border-violet/40", sky:"hover:border-sky/40", emerald:"hover:border-emerald/40", amber:"hover:border-amber/40", rose:"hover:border-rose/40", accent:"hover:border-accent/40", teal:"hover:border-teal/40" };
-const glow: Record<Color, string> = {
-  violet:"hover:shadow-[0_10px_60px_-14px_rgba(167,139,250,0.5)]",
-  sky:"hover:shadow-[0_10px_60px_-14px_rgba(56,189,248,0.5)]",
-  emerald:"hover:shadow-[0_10px_60px_-14px_rgba(52,211,153,0.5)]",
-  amber:"hover:shadow-[0_10px_60px_-14px_rgba(251,191,36,0.5)]",
-  rose:"hover:shadow-[0_10px_60px_-14px_rgba(251,113,133,0.5)]",
-  accent:"hover:shadow-[0_10px_60px_-14px_rgba(205,172,122,0.5)]",
-  teal:"hover:shadow-[0_10px_60px_-14px_rgba(45,212,191,0.5)]",
-};
 const statusStyle: Record<Status, string> = {
-  Live: "text-emerald border-emerald/30 bg-emerald/5",
-  "In studio": "text-muted border-border bg-white/[0.02]",
-  Soon: "text-accent border-accent/30 bg-accent/5",
+  Live: "text-live border-live/30",
+  "In dev": "text-muted border-border",
+  Soon: "text-accent border-accent/30",
 };
 
-function AppCard({ app }: { app: App }) {
+function FleetCard({ app, index }: { app: App; index: number }) {
   const live = app.href !== null;
+  const id = String(index + 1).padStart(2, "0");
   const inner = (
     <>
+      {/* corner ticks */}
+      <span className="absolute top-3 left-3 w-2.5 h-2.5 border-l border-t border-border group-hover:border-accent/60 transition-colors" />
+      <span className="absolute top-3 right-3 w-2.5 h-2.5 border-r border-t border-border group-hover:border-accent/60 transition-colors" />
+      <span className="absolute bottom-3 left-3 w-2.5 h-2.5 border-l border-b border-border group-hover:border-accent/60 transition-colors" />
+      <span className="absolute bottom-3 right-3 w-2.5 h-2.5 border-r border-b border-border group-hover:border-accent/60 transition-colors" />
+
       <div className="flex items-start justify-between mb-7">
-        <div className={`w-14 h-14 border ${ring[app.color]} ${tint[app.color]} ${text[app.color]} flex items-center justify-center transition-all duration-500 group-hover:scale-105`}>
-          <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">{app.icon}</svg>
+        <div className="w-14 h-14 border border-border bg-surface text-foreground/80 flex items-center justify-center transition-all duration-500 group-hover:text-accent group-hover:border-accent/40">
+          <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">{app.icon}</svg>
         </div>
-        <span className={`font-mono text-[10px] font-medium tracking-wider px-2.5 py-1 border ${statusStyle[app.status]}`}>
-          {app.status === "Live" && <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald mr-1.5 align-middle pulse-dot" />}
-          {app.status.toUpperCase()}
-        </span>
+        <div className="flex flex-col items-end gap-2">
+          <span className="font-mono text-[10px] text-muted-dim tracking-widest">SYS_{id}</span>
+          <span className={`font-mono text-[10px] font-medium tracking-wider px-2 py-0.5 border ${statusStyle[app.status]} uppercase`}>
+            {app.status === "Live" && <span className="inline-block w-1.5 h-1.5 rounded-full bg-live mr-1.5 align-middle pulse-dot" />}
+            {app.status}
+          </span>
+        </div>
       </div>
-      <div className="flex items-baseline gap-3 mb-2">
-        <h3 className={`font-display text-[1.7rem] leading-none font-semibold tracking-tight text-foreground transition-colors duration-300 ${hoverText[app.color]}`}>
-          {app.name}
-        </h3>
+
+      <div className="flex items-baseline gap-3 mb-2.5">
+        <h3 className="font-display text-2xl font-extrabold uppercase tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent">{app.name}</h3>
         <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-dim">{app.category}</span>
       </div>
-      <p className="text-[15px] text-muted leading-relaxed max-w-md">{app.line}</p>
-      <div className={`mt-7 flex items-center gap-2 text-[13px] font-medium tracking-wide ${live ? text[app.color] : "text-muted-dim"}`}>
-        <span>{live ? "Enter" : "In the studio"}</span>
+      <p className="text-[14px] text-muted leading-relaxed max-w-md">{app.line}</p>
+      <div className={`mt-7 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.15em] ${live ? "text-accent" : "text-muted-dim"}`}>
+        <span>{live ? "Launch ▸" : "In development"}</span>
         {live && <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>}
       </div>
     </>
   );
 
-  const base = `group relative block h-full p-8 border ${ring[app.color]} bg-surface/40 backdrop-blur-sm transition-all duration-500 ${app.featured ? "sm:col-span-2 sm:p-10" : ""}`;
+  const base = `group relative block h-full p-8 border border-border bg-surface/40 backdrop-blur-sm transition-all duration-500 ${app.featured ? "sm:col-span-2 sm:p-10" : ""}`;
   if (live) {
     return (
-      <Link href={app.href!} className={`${base} ${hoverBorder[app.color]} ${glow[app.color]} hover:-translate-y-1 hover:bg-surface/70`}>
+      <Link href={app.href!} className={`${base} hover:border-accent/40 hover:bg-surface-2 hover:-translate-y-1 hover:shadow-[0_12px_60px_-16px_rgba(90,162,255,0.45)]`}>
         {inner}
       </Link>
     );
   }
-  return <div className={`${base} opacity-80`}>{inner}</div>;
+  return <div className={`${base} opacity-75`}>{inner}</div>;
 }
 
 export default function Home() {
@@ -116,103 +111,102 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* ── HERO ─────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[94vh] flex items-center overflow-hidden">
-        {/* Atmosphere */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="aurora animate-aurora w-[42rem] h-[42rem] -top-40 -right-32" style={{ background: "radial-gradient(circle, rgba(167,139,250,0.30), transparent 65%)" }} />
-          <div className="aurora animate-aurora-slow w-[38rem] h-[38rem] top-1/3 -left-40" style={{ background: "radial-gradient(circle, rgba(56,189,248,0.22), transparent 65%)" }} />
-          <div className="aurora animate-aurora w-[30rem] h-[30rem] bottom-0 right-1/4" style={{ background: "radial-gradient(circle, rgba(205,172,122,0.18), transparent 65%)" }} />
-          <div className="absolute inset-0 dot-grid opacity-40" />
-          <div className="absolute inset-0" style={{ background: "radial-gradient(120% 90% at 50% 0%, transparent 50%, rgba(9,9,12,0.85) 100%)" }} />
+      <section className="relative min-h-[95vh] flex items-center justify-center overflow-hidden scanlines vignette">
+        <div className="absolute inset-0 z-0">
+          <StarField />
         </div>
+        <div className="absolute inset-0 z-0 tech-grid opacity-70" />
+        <div className="nebula animate-nebula w-[44rem] h-[44rem] top-[-12rem] left-1/2 -translate-x-1/2 z-0" style={{ background: "radial-gradient(circle, rgba(90,162,255,0.28), transparent 60%)" }} />
 
-        <div className="max-w-7xl mx-auto px-6 w-full relative z-10 py-28">
-          <div className="rise inline-flex items-center gap-3 mb-9">
-            <span className="text-accent animate-glow"><Kite className="w-5 h-5" /></span>
-            <span className="font-mono text-[11px] uppercase tracking-[0.4em] text-muted">A house of AI-native products</span>
+        <div className="relative z-10 max-w-6xl mx-auto px-6 text-center py-28">
+          <div className="rise inline-flex items-center gap-3 mb-9 px-4 py-1.5 border border-border bg-background/40 backdrop-blur-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-live pulse-dot" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.32em] text-muted">An AI workhouse · Est. MMXXVI</span>
           </div>
 
-          <h1 className="font-display font-medium tracking-tight leading-[0.92] text-foreground max-w-5xl">
-            <span className="block text-5xl sm:text-7xl lg:text-[6.5rem] rise-1">The house of</span>
-            <span className="block text-5xl sm:text-7xl lg:text-[6.5rem] rise-2">
-              <span className="italic sheen">intelligent</span> things.
-            </span>
+          <h1 className="font-display font-extrabold uppercase tracking-[-0.02em] leading-[0.9] text-foreground">
+            <span className="block text-5xl sm:text-7xl lg:text-[7rem] rise-1">We engineer</span>
+            <span className="block text-5xl sm:text-7xl lg:text-[7rem] rise-2 animate-gradient-text text-glow">intelligence</span>
+            <span className="block text-5xl sm:text-7xl lg:text-[7rem] rise-3">at scale.</span>
           </h1>
 
-          <p className="rise-3 mt-9 text-lg sm:text-xl text-muted leading-relaxed max-w-2xl">
-            We don&apos;t ship apps. We build a family of intelligent things — each its
-            own world, all under one roof. Software with a point of view, for the
-            people who want the future early.
+          <p className="rise-4 mt-9 text-lg sm:text-xl text-muted leading-relaxed max-w-2xl mx-auto">
+            KYTEPUSH is an AI workhouse building a fleet of intelligent products —
+            each one pushing what software can do. Ten systems online. A new one
+            shipping every week.
           </p>
 
-          {/* Brand-jewel constellation */}
-          <div className="rise-4 mt-10 flex flex-wrap items-center gap-3">
-            {apps.slice(0, 8).map((app) => (
-              <span key={app.name} title={app.name} className={`w-11 h-11 border ${ring[app.color]} ${tint[app.color]} ${text[app.color]} flex items-center justify-center transition-transform duration-300 hover:-translate-y-1`}>
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">{app.icon}</svg>
-              </span>
-            ))}
-            <span className="font-mono text-[11px] text-muted-dim tracking-wider ml-1">+ {apps.length - 8} more</span>
-          </div>
-
-          <div className="rise-5 mt-11 flex flex-col sm:flex-row items-start gap-4">
-            <a href="#collection" className="group inline-flex items-center gap-3 px-7 py-3.5 bg-foreground text-background font-medium text-sm tracking-wide hover:bg-accent transition-colors duration-300">
-              Enter the collection
+          <div className="rise-5 mt-11 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="#fleet" className="group inline-flex items-center gap-3 px-8 py-3.5 bg-accent text-background font-semibold text-[13px] uppercase tracking-[0.14em] hover:bg-accent-bright transition-colors duration-300">
+              View the fleet
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </a>
-            <Link href="/jarvis" className="inline-flex items-center gap-3 px-7 py-3.5 border border-border text-foreground font-medium text-sm tracking-wide hover:border-accent/50 hover:text-accent transition-colors duration-300">
+            <Link href="/jarvis" className="inline-flex items-center gap-3 px-8 py-3.5 border border-border text-foreground font-semibold text-[13px] uppercase tracking-[0.14em] hover:border-accent/50 hover:text-accent transition-colors duration-300">
               Meet Jarvis
             </Link>
           </div>
+
+          {/* Telemetry strip */}
+          <div className="rise-5 mt-16 grid grid-cols-2 sm:grid-cols-4 gap-px max-w-2xl mx-auto border border-border bg-border/50">
+            {[
+              { v: String(liveCount).padStart(2, "0"), l: "Systems online" },
+              { v: String(apps.length), l: "In the fleet" },
+              { v: "07", l: "Domains" },
+              { v: "∞", l: "Roadmap" },
+            ].map((s) => (
+              <div key={s.l} className="bg-background/80 backdrop-blur-sm py-5 px-3">
+                <div className="font-display text-2xl sm:text-3xl font-extrabold text-foreground">{s.v}</div>
+                <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-dim mt-1">{s.l}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Bottom hairline that draws in */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-border" style={{ animation: "hairline 1.4s cubic-bezier(0.16,1,0.3,1) 0.8s both" }} />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-accent/30 animate-sweep z-10" />
       </section>
 
       {/* ── MARQUEE ──────────────────────────────────────────────────── */}
-      <div className="border-b border-border overflow-hidden py-3 bg-background-2">
+      <div className="border-b border-border overflow-hidden py-3 bg-background-2 relative z-10">
         <div className="animate-marquee whitespace-nowrap flex gap-10 text-[11px] font-mono uppercase tracking-[0.3em] text-muted-dim">
           {Array.from({ length: 3 }).map((_, i) => (
             <span key={i} className="flex gap-10 items-center">
-              <span>Intelligence</span><span className="text-accent">✦</span>
-              <span>Commerce</span><span className="text-violet">✦</span>
-              <span>Media</span><span className="text-sky">✦</span>
-              <span>Travel</span><span className="text-emerald">✦</span>
-              <span>Play</span><span className="text-rose">✦</span>
-              <span>Markets</span><span className="text-amber">✦</span>
-              <span>Sport</span><span className="text-teal">✦</span>
+              <span>Intelligence</span><span className="text-accent">◇</span>
+              <span>Commerce</span><span className="text-accent">◇</span>
+              <span>Media</span><span className="text-accent">◇</span>
+              <span>Travel</span><span className="text-accent">◇</span>
+              <span>Markets</span><span className="text-accent">◇</span>
+              <span>Sport</span><span className="text-accent">◇</span>
+              <span>Play</span><span className="text-accent">◇</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* ── ETHOS ────────────────────────────────────────────────────── */}
-      <section id="ethos" className="relative py-28 sm:py-36 border-b border-border overflow-hidden">
-        <div className="aurora w-[36rem] h-[36rem] -bottom-40 -right-32 opacity-30" style={{ background: "radial-gradient(circle, rgba(205,172,122,0.18), transparent 65%)" }} />
+      {/* ── MISSION ──────────────────────────────────────────────────── */}
+      <section id="mission" className="relative py-28 sm:py-36 border-b border-border overflow-hidden">
+        <div className="nebula w-[36rem] h-[36rem] -bottom-40 -right-32 opacity-40 z-0" style={{ background: "radial-gradient(circle, rgba(90,162,255,0.18), transparent 65%)" }} />
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <ScrollReveal>
-            <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-muted-dim">001 — Ethos</span>
+            <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-accent">// 001 — Mission</span>
           </ScrollReveal>
           <ScrollReveal delay={100}>
-            <h2 className="font-display text-3xl sm:text-5xl lg:text-[3.8rem] leading-[1.08] font-normal tracking-tight mt-8 max-w-4xl text-foreground/95">
-              Technology should feel like{" "}
-              <span className="italic text-accent">luxury</span> — effortless,
-              intentional, and a little bit{" "}
-              <span className="italic animate-gradient-text">magic</span>.
+            <h2 className="font-display text-3xl sm:text-5xl lg:text-[3.6rem] font-extrabold uppercase tracking-tight leading-[1.05] mt-8 max-w-4xl text-foreground">
+              Build the products that drag{" "}
+              <span className="animate-gradient-text">the future</span> forward —
+              and ship them faster than anyone thinks possible.
             </h2>
           </ScrollReveal>
 
           <div className="grid sm:grid-cols-3 gap-px mt-20 bg-border border border-border">
             {[
-              { n: "I", t: "One house, many worlds", d: "Every product shares a soul but lives its own life. A family, not a portfolio." },
-              { n: "II", t: "Taste is the algorithm", d: "We sweat the feeling. If it isn't beautiful and obvious, it isn't finished." },
-              { n: "III", t: "Built for the early", d: "For people who want their software to feel like where the world is going next." },
+              { n: "01", t: "Engineer, don't decorate", d: "Every product is a machine with a job. We build for capability first, polish relentlessly second." },
+              { n: "02", t: "Ship at the edge", d: "Frontier models, frontier pace. We'd rather launch a tenth product than perfect the first." },
+              { n: "03", t: "One workhouse", d: "Shared infrastructure, shared standards. Each system makes the next one faster to build." },
             ].map((p, i) => (
               <ScrollReveal key={p.n} delay={i * 120} animation="scale">
                 <div className="bg-background p-9 h-full group hover:bg-background-2 transition-colors duration-500">
-                  <span className="font-display text-3xl italic text-accent/70 group-hover:text-accent transition-colors">{p.n}</span>
-                  <h3 className="font-display text-xl font-semibold mt-5 mb-2 text-foreground">{p.t}</h3>
+                  <span className="font-mono text-sm text-accent tracking-widest">{p.n}</span>
+                  <h3 className="font-display text-lg font-bold uppercase tracking-tight mt-5 mb-2 text-foreground">{p.t}</h3>
                   <p className="text-sm text-muted leading-relaxed">{p.d}</p>
                 </div>
               </ScrollReveal>
@@ -221,32 +215,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── THE COLLECTION ───────────────────────────────────────────── */}
-      <section id="collection" className="relative py-28 sm:py-36 overflow-hidden">
-        <div className="aurora w-[40rem] h-[40rem] top-20 -left-40 opacity-25" style={{ background: "radial-gradient(circle, rgba(167,139,250,0.20), transparent 65%)" }} />
+      {/* ── THE FLEET ────────────────────────────────────────────────── */}
+      <section id="fleet" className="relative py-28 sm:py-36 overflow-hidden">
+        <div className="nebula w-[40rem] h-[40rem] top-20 -left-40 opacity-30 z-0" style={{ background: "radial-gradient(circle, rgba(90,162,255,0.16), transparent 65%)" }} />
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <ScrollReveal>
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
               <div>
-                <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-muted-dim">002 — The Collection</span>
-                <h2 className="font-display text-4xl sm:text-6xl font-medium tracking-tight mt-7 text-foreground">
-                  Ten houses.
-                  <br />
-                  <span className="italic text-accent">One</span> roof.
+                <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-accent">// 002 — The Fleet</span>
+                <h2 className="font-display text-4xl sm:text-6xl font-extrabold uppercase tracking-tight mt-7 text-foreground">
+                  Ten systems.<br /><span className="animate-gradient-text">One workhouse.</span>
                 </h2>
               </div>
-              <div className="flex items-center gap-8 font-mono text-xs text-muted">
-                <div><span className="block text-3xl font-display not-italic text-emerald mb-1">{liveCount}</span>live now</div>
-                <div><span className="block text-3xl font-display not-italic text-foreground mb-1">{apps.length}</span>in the house</div>
-                <div><span className="block text-3xl font-display not-italic text-accent mb-1">∞</span>coming</div>
-              </div>
+              <p className="text-muted max-w-sm text-sm leading-relaxed font-mono tracking-wide">
+                Live systems launch on click. The rest are in active development —
+                shipping continuously.
+              </p>
             </div>
           </ScrollReveal>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {apps.map((app, i) => (
               <ScrollReveal key={app.name} delay={(i % 3) * 100} animation="scale" className={app.featured ? "sm:col-span-2" : ""}>
-                <AppCard app={app} />
+                <FleetCard app={app} index={i} />
               </ScrollReveal>
             ))}
           </div>
@@ -254,21 +245,19 @@ export default function Home() {
       </section>
 
       {/* ── CLOSING ──────────────────────────────────────────────────── */}
-      <section className="relative py-32 sm:py-44 border-t border-border overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="aurora animate-aurora w-[44rem] h-[44rem] -top-24 left-1/2 -translate-x-1/2" style={{ background: "radial-gradient(circle, rgba(205,172,122,0.22), transparent 60%)" }} />
-        </div>
+      <section className="relative py-32 sm:py-44 border-t border-border overflow-hidden scanlines">
+        <div className="absolute inset-0 z-0 tech-grid opacity-50" />
+        <div className="nebula animate-nebula w-[46rem] h-[46rem] -top-24 left-1/2 -translate-x-1/2 z-0" style={{ background: "radial-gradient(circle, rgba(90,162,255,0.22), transparent 60%)" }} />
         <ScrollReveal className="max-w-4xl mx-auto px-6 text-center relative z-10">
-          <span className="text-accent inline-block mb-8 animate-glow"><Kite className="w-9 h-9 mx-auto" /></span>
-          <h2 className="font-display text-4xl sm:text-6xl lg:text-7xl font-medium tracking-tight leading-[1.02] text-foreground">
-            Come live in the{" "}
-            <span className="italic sheen">future</span>.
+          <span className="text-accent inline-block mb-8 animate-glow"><Kite className="w-10 h-10 mx-auto" /></span>
+          <h2 className="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold uppercase tracking-tight leading-[0.95] text-foreground">
+            The future is<br /><span className="animate-gradient-text text-glow">being built.</span>
           </h2>
           <p className="text-muted max-w-xl mx-auto mt-7 mb-12 text-lg leading-relaxed">
-            Ten products today, a new one every month. Step inside the house and
+            Ten systems today, a new one every week. Step into the workhouse and
             start with the one that learns your mind.
           </p>
-          <Link href="/jarvis" className="group inline-flex items-center gap-3 px-9 py-4 bg-foreground text-background font-medium text-sm tracking-wide hover:bg-accent transition-colors duration-300">
+          <Link href="/jarvis" className="group inline-flex items-center gap-3 px-9 py-4 bg-accent text-background font-semibold text-[13px] uppercase tracking-[0.14em] hover:bg-accent-bright transition-colors duration-300">
             Start with Jarvis
             <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </Link>
