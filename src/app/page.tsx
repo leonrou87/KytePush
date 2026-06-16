@@ -123,8 +123,8 @@ const apps: App[] = [
     category: "News",
     description:
       "Autonomous, unbiased news. Rewrites the day's top stories in neutral prose — and maps exactly where the left and the right split.",
-    href: null,
-    status: "Building",
+    href: "https://faultlines.kytepush.com",
+    status: "Live",
     color: "sky",
     icon: I.faultlines,
   },
@@ -133,8 +133,8 @@ const apps: App[] = [
     category: "Travel",
     description:
       "AI travel itinerary builder. Pick the real places you want; Stitch arranges them into a coherent, day-by-day trip that's yours.",
-    href: null,
-    status: "Building",
+    href: "https://stitch.kytepush.com",
+    status: "Live",
     color: "emerald",
     icon: I.stitch,
   },
@@ -143,8 +143,8 @@ const apps: App[] = [
     category: "Sport",
     description:
       "An MLB mid-game win predictor. A base-out simulation engine models the rest of the game to surface a real, live betting edge.",
-    href: null,
-    status: "Research",
+    href: "https://edge.kytepush.com",
+    status: "Live",
     color: "sky",
     icon: I.edge,
   },
