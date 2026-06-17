@@ -91,6 +91,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <div className="flex flex-col gap-2.5 text-sm text-muted">
                   <Link href="/#mission" className="hover-underline hover:text-foreground transition-colors w-fit">Mission</Link>
                   <Link href="/#fleet" className="hover-underline hover:text-foreground transition-colors w-fit">Products</Link>
+                  <Link href="/analytics" className="hover-underline hover:text-foreground transition-colors w-fit inline-flex items-center gap-1.5">
+                    <span className="w-1 h-1 rounded-full bg-accent" /> Analytics
+                  </Link>
                 </div>
               </div>
             </div>

@@ -1,0 +1,236 @@
+import Link from "next/link";
+import { isAuthed, signOut } from "./actions";
+import { PasswordGate } from "./PasswordGate";
+
+export const dynamic = "force-dynamic";
+export const metadata = { title: "KYTEPUSH — Fleet Analytics" };
+
+/* ── Fleet definition ───────────────────────────────────────────────── */
+type Node = { key: string; label: string; url: string; cat: string };
+const FLEET: Node[] = [
+  { key: "kytepush", label: "Core", url: "https://kytepush.com", cat: "Company" },
+  { key: "curated", label: "Curated", url: "https://curated.kytepush.com", cat: "Commerce" },
+  { key: "faultlines", label: "Fault Lines", url: "https://faultlines.kytepush.com", cat: "Media" },
+  { key: "stitch", label: "Stitch", url: "https://stitch.kytepush.com", cat: "Travel" },
+  { key: "diamondedge", label: "Edge", url: "https://edge.kytepush.com", cat: "Sport" },
+  { key: "yieldmap", label: "YieldMap", url: "https://yieldmap.kytepush.com", cat: "Finance" },
+];
+
+type Probe = { node: Node; status: number; ms: number; online: boolean };
+type Deploys = { key: string; total: number; last: number | null; week: number; byDay: number[] };
+
+async function probe(node: Node): Promise<Probe> {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 8000);
+  const start = Date.now();
+  try {
+    const res = await fetch(node.url, { method: "GET", cache: "no-store", redirect: "follow", signal: ctrl.signal });
+    return { node, status: res.status, ms: Date.now() - start, online: res.status < 400 };
+  } catch {
+    return { node, status: 0, ms: Date.now() - start, online: false };
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+async function deploys(key: string): Promise<Deploys> {
+  const token = process.env.VERCEL_TOKEN;
+  const team = process.env.VERCEL_TEAM_ID;
+  const empty: Deploys = { key, total: 0, last: null, week: 0, byDay: [0, 0, 0, 0, 0, 0, 0] };
+  if (!token) return empty;
+  try {
+    const url = `https://api.vercel.com/v6/deployments?app=${key}&teamId=${team}&target=production&limit=100`;
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" });
+    if (!res.ok) return empty;
+    const data = await res.json();
+    const list: { createdAt: number }[] = data.deployments ?? [];
+    const now = Date.now();
+    const dayMs = 86_400_000;
+    const byDay = [0, 0, 0, 0, 0, 0, 0];
+    let week = 0;
+    for (const d of list) {
+      const age = now - d.createdAt;
+      const dayIdx = Math.floor(age / dayMs);
+      if (dayIdx >= 0 && dayIdx < 7) {
+        byDay[6 - dayIdx] += 1;
+        week += 1;
+      }
+    }
+    return { key, total: list.length, last: list[0]?.createdAt ?? null, week, byDay };
+  } catch {
+    return empty;
+  }
+}
+
+function ago(ts: number | null): string {
+  if (!ts) return "—";
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return `${s}s ago`;
+  if (s < 3600) return `${Math.floor(s / 60)}m ago`;
+  if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
+  return `${Math.floor(s / 86400)}d ago`;
+}
+
+export default async function Analytics() {
+  if (!(await isAuthed())) return <PasswordGate />;
+
+  const [probes, deployData] = await Promise.all([
+    Promise.all(FLEET.map(probe)),
+    Promise.all(FLEET.map((n) => deploys(n.key))),
+  ]);
+  const dep = Object.fromEntries(deployData.map((d) => [d.key, d]));
+
+  const online = probes.filter((p) => p.online).length;
+  const onlineProbes = probes.filter((p) => p.online && p.ms > 0);
+  const avgMs = onlineProbes.length ? Math.round(onlineProbes.reduce((a, p) => a + p.ms, 0) / onlineProbes.length) : 0;
+  const totalDeploys = deployData.reduce((a, d) => a + d.total, 0);
+  const weekDeploys = deployData.reduce((a, d) => a + d.week, 0);
+  const fleetByDay = Array.from({ length: 7 }, (_, i) => deployData.reduce((a, d) => a + d.byDay[i], 0));
+  const maxDay = Math.max(1, ...fleetByDay);
+  const dayLabels = (() => {
+    const out: string[] = [];
+    const names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    for (let i = 6; i >= 0; i--) out.push(names[new Date(Date.now() - i * 86_400_000).getDay()]);
+    return out;
+  })();
+  const stamp = new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC";
+
+  const Stat = ({ v, l, accent }: { v: string; l: string; accent?: boolean }) => (
+    <div className="bg-background border border-border p-6">
+      <div className={`font-display text-3xl sm:text-4xl font-extrabold ${accent ? "animate-gradient-text" : "text-foreground"}`}>{v}</div>
+      <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-dim mt-1.5">{l}</div>
+    </div>
+  );
+
+  return (
+    <div className="relative min-h-screen scanlines">
+      <div className="absolute inset-0 z-0 tech-grid opacity-40" />
+      <div className="nebula w-[40rem] h-[40rem] -top-40 -right-32 opacity-40 z-0" style={{ background: "radial-gradient(circle, rgba(90,162,255,0.16), transparent 65%)" }} />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-14">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+          <div>
+            <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-accent">// Operations</span>
+            <h1 className="font-display text-4xl sm:text-6xl font-extrabold uppercase tracking-tight mt-4 text-foreground">
+              Fleet <span className="animate-gradient-text">Analytics</span>
+            </h1>
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-dim mt-3">
+              Live telemetry · synced {stamp}
+            </p>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-live">
+              <span className="w-2 h-2 rounded-full bg-live pulse-dot" />
+              {online}/{FLEET.length} online
+            </span>
+            <form action={signOut}>
+              <button className="font-mono text-[10px] uppercase tracking-wider text-muted-dim hover:text-foreground border border-border px-3 py-1.5 transition-colors">Lock</button>
+            </form>
+          </div>
+        </div>
+
+        {/* Telemetry row */}
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-px bg-border border border-border mb-5">
+          <Stat v={`${online}/${FLEET.length}`} l="Systems online" accent />
+          <Stat v={`${avgMs}ms`} l="Avg response" />
+          <Stat v={String(weekDeploys)} l="Deploys · 7d" />
+          <Stat v={String(totalDeploys)} l="Deploys · total" />
+          <Stat v="7" l="Live domains" />
+        </div>
+
+        {/* Live status grid */}
+        <div className="mb-5">
+          <h2 className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-dim mb-4">Live systems</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border border border-border">
+            {probes.map((p) => {
+              const d = dep[p.node.key];
+              return (
+                <div key={p.node.key} className="bg-background p-5 group">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2.5">
+                      <span className={`w-2 h-2 rounded-full ${p.online ? "bg-live pulse-dot" : "bg-rose"}`} />
+                      <span className="font-display text-base font-bold uppercase tracking-tight text-foreground">{p.node.label}</span>
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-muted-dim">{p.node.cat}</span>
+                    </div>
+                    <span className={`font-mono text-[10px] ${p.online ? "text-live" : "text-rose"}`}>{p.online ? p.status : "DOWN"}</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 font-mono text-[10px] uppercase tracking-wider text-muted-dim">
+                    <div><span className="block text-foreground text-sm font-sans font-semibold normal-case tracking-normal">{p.ms}ms</span>latency</div>
+                    <div><span className="block text-foreground text-sm font-sans font-semibold normal-case tracking-normal">{d?.week ?? 0}</span>deploys 7d</div>
+                    <div><span className="block text-foreground text-sm font-sans font-semibold normal-case tracking-normal">{ago(d?.last ?? null)}</span>shipped</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Deploy activity + visitor analytics */}
+        <div className="grid lg:grid-cols-2 gap-5">
+          {/* Real deploy activity chart */}
+          <div className="bg-background border border-border p-7">
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-dim mb-1">Deployment activity</h2>
+            <p className="font-mono text-[10px] text-muted-dim mb-7">Production ships across the fleet · last 7 days</p>
+            <div className="flex items-end justify-between gap-2 h-44">
+              {fleetByDay.map((v, i) => (
+                <div key={i} className="flex-1 flex flex-col items-center gap-2">
+                  <span className="font-mono text-[10px] text-muted">{v || ""}</span>
+                  <div className="w-full bg-surface border border-border relative" style={{ height: "100%" }}>
+                    <div
+                      className="absolute bottom-0 left-0 right-0 bg-accent/70 border-t border-accent transition-all"
+                      style={{ height: `${(v / maxDay) * 100}%` }}
+                    />
+                  </div>
+                  <span className="font-mono text-[9px] uppercase tracking-wider text-muted-dim">{dayLabels[i]}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Visitor analytics — honest empty state */}
+          <div className="bg-background border border-border p-7 flex flex-col">
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-dim mb-1">Visitor analytics</h2>
+            <p className="font-mono text-[10px] text-muted-dim mb-7">Pageviews · visitors · sources</p>
+            <div className="flex-1 flex flex-col items-center justify-center text-center border border-dashed border-border py-10 px-6">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber mb-4 animate-glow" />
+              <p className="font-display text-lg font-bold uppercase tracking-tight text-foreground mb-2">Not connected</p>
+              <p className="text-sm text-muted leading-relaxed max-w-xs">
+                No tracking beacon is collecting pageviews across the fleet yet. Wire
+                up a Supabase-backed tracker to light this panel up with real visitor
+                data.
+              </p>
+              <span className="mt-5 font-mono text-[10px] uppercase tracking-[0.18em] text-accent">Ready to connect →</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Per-system deploy ledger */}
+        <div className="mt-5 bg-background border border-border p-7">
+          <h2 className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-dim mb-5">System ledger</h2>
+          <div className="space-y-px">
+            {[...deployData].sort((a, b) => b.total - a.total).map((d) => {
+              const node = FLEET.find((n) => n.key === d.key)!;
+              const max = Math.max(1, ...deployData.map((x) => x.total));
+              return (
+                <div key={d.key} className="flex items-center gap-4 py-2.5">
+                  <span className="font-display text-sm font-bold uppercase tracking-tight text-foreground w-28 shrink-0">{node.label}</span>
+                  <div className="flex-1 h-1.5 bg-surface relative overflow-hidden">
+                    <div className="absolute inset-y-0 left-0 bg-accent/60" style={{ width: `${(d.total / max) * 100}%` }} />
+                  </div>
+                  <span className="font-mono text-[11px] text-muted w-24 text-right">{d.total} deploys</span>
+                  <span className="font-mono text-[11px] text-muted-dim w-20 text-right">{ago(d.last)}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="mt-10 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-muted-dim">
+          <Link href="/" className="hover:text-foreground transition-colors">← Back to site</Link>
+          <span>KYTEPUSH OPS · {stamp}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
