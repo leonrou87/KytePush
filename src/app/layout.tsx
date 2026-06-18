@@ -62,6 +62,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
         <main className="flex-1 pt-16 relative z-10">{children}</main>
 
+        {/* Google AdSense */}
+        <Script
+          id="adsbygoogle-init"
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6716195888944928"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+
         {/* Fleet analytics beacon */}
         <Script src="/track.js" strategy="afterInteractive" />
 
