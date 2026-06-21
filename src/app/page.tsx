@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ScrollReveal } from "./components/ScrollReveal";
-import { StarField } from "./components/StarField";
+import { Hero3D } from "./components/Hero3D";
+import { Tilt } from "./components/Tilt";
 
 type Status = "Live" | "In dev" | "Soon";
 type Color = "accent" | "violet" | "sky" | "emerald" | "amber" | "rose" | "teal";
@@ -113,10 +114,10 @@ export default function Home() {
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="relative min-h-[95vh] flex items-center justify-center overflow-hidden scanlines vignette">
         <div className="absolute inset-0 z-0">
-          <StarField />
+          <Hero3D />
         </div>
-        <div className="absolute inset-0 z-0 tech-grid opacity-70" />
-        <div className="nebula animate-nebula w-[44rem] h-[44rem] top-[-12rem] left-1/2 -translate-x-1/2 z-0" style={{ background: "radial-gradient(circle, rgba(90,162,255,0.28), transparent 60%)" }} />
+        <div className="absolute inset-0 z-[1] tech-grid opacity-40 pointer-events-none" />
+        <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: "radial-gradient(120% 80% at 50% 45%, transparent 30%, rgba(0,0,4,0.55) 75%, rgba(0,0,4,0.9) 100%)" }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center py-28">
           <div className="rise inline-flex items-center gap-3 mb-9 px-4 py-1.5 border border-border bg-background/40 backdrop-blur-sm">
@@ -237,7 +238,9 @@ export default function Home() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {apps.map((app, i) => (
               <ScrollReveal key={app.name} delay={(i % 3) * 100} animation="scale" className={app.featured ? "sm:col-span-2" : ""}>
-                <FleetCard app={app} index={i} />
+                <Tilt>
+                  <FleetCard app={app} index={i} />
+                </Tilt>
               </ScrollReveal>
             ))}
           </div>
