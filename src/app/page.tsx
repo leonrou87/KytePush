@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { ScrollReveal } from "./components/ScrollReveal";
 import { Hero3D } from "./components/Hero3D";
 import { Tilt } from "./components/Tilt";
+import { WaitlistForm } from "./components/WaitlistForm";
 
 type Status = "Live" | "In dev" | "Soon";
 type Color = "accent" | "violet" | "sky" | "emerald" | "amber" | "rose" | "teal";
@@ -259,14 +260,17 @@ export default function Home() {
           <h2 className="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold uppercase tracking-tight leading-[0.95] text-foreground">
             The future is<br /><span className="animate-gradient-text text-glow">being built.</span>
           </h2>
-          <p className="text-muted max-w-xl mx-auto mt-7 mb-12 text-lg leading-relaxed">
-            Ten systems today, a new one every week. Step into the workhouse and
-            start with the one that learns your mind.
+          <p className="text-muted max-w-xl mx-auto mt-7 mb-10 text-lg leading-relaxed">
+            Ten systems today, a new one every week. Get early access to every
+            product we ship — one email, the whole fleet.
           </p>
-          <Link href="/jarvis" className="group inline-flex items-center gap-3 px-9 py-4 bg-accent text-background font-semibold text-[13px] uppercase tracking-[0.14em] hover:bg-accent-bright transition-colors duration-300">
-            Start with Jarvis
-            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-          </Link>
+          <WaitlistForm source="home-closing" />
+          <div className="mt-8">
+            <Link href="/jarvis" className="group inline-flex items-center gap-2 text-muted hover:text-accent transition-colors text-[13px] uppercase tracking-[0.14em] font-medium">
+              Or start with Jarvis now
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </Link>
+          </div>
         </ScrollReveal>
       </section>
     </div>
