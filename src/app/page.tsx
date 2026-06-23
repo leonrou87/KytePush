@@ -126,9 +126,9 @@ export default function Home() {
           </div>
 
           <h1 className="font-display font-extrabold uppercase tracking-[-0.02em] leading-[0.9] text-foreground">
-            <span className="block text-5xl sm:text-7xl lg:text-[7rem] rise-1">We engineer</span>
-            <span className="block text-5xl sm:text-7xl lg:text-[7rem] rise-2 animate-gradient-text text-glow">intelligence</span>
-            <span className="block text-5xl sm:text-7xl lg:text-[7rem] rise-3">at scale.</span>
+            <span className="block text-[clamp(2.1rem,8.5vw,7rem)] rise-1">We engineer</span>
+            <span className="block text-[clamp(2.1rem,8.5vw,7rem)] rise-2 animate-gradient-text text-glow">intelligence</span>
+            <span className="block text-[clamp(2.1rem,8.5vw,7rem)] rise-3">at scale.</span>
           </h1>
 
           <p className="rise-4 mt-9 text-lg sm:text-xl text-muted leading-relaxed max-w-2xl mx-auto">

@@ -13,9 +13,29 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
-  title: "KYTEPUSH — An AI workhouse",
+  metadataBase: new URL("https://kytepush.com"),
+  title: {
+    default: "KYTEPUSH — An AI workhouse",
+    template: "%s — KYTEPUSH",
+  },
   description:
     "KYTEPUSH is an AI workhouse engineering a fleet of intelligent products that push what software can do. Ten systems online, more shipping every week.",
+  keywords: ["KYTEPUSH", "AI apps", "AI studio", "intelligent software", "Jarvis", "AI workhouse"],
+  applicationName: "KYTEPUSH",
+  authors: [{ name: "KYTEPUSH" }],
+  openGraph: {
+    type: "website",
+    siteName: "KYTEPUSH",
+    title: "KYTEPUSH — An AI workhouse",
+    description:
+      "A fleet of intelligent products that push what software can do. Engineering intelligence at scale.",
+    url: "https://kytepush.com",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "KYTEPUSH — An AI workhouse",
+    description: "A fleet of intelligent products. Engineering intelligence at scale.",
+  },
 };
 
 /* House mark — the kite */
