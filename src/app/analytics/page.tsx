@@ -114,6 +114,24 @@ async function visitorStats(): Promise<Vis> {
   } catch { return empty; }
 }
 
+async function waitlistCount(): Promise<{ total: number; week: number }> {
+  const base = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_KEY;
+  const out = { total: 0, week: 0 };
+  if (!base || !key) return out;
+  try {
+    const head = { apikey: key, Authorization: `Bearer ${key}`, Prefer: "count=exact" } as Record<string, string>;
+    const all = await fetch(`${base}/rest/v1/waitlist?select=id`, { headers: { ...head, Range: "0-0" }, cache: "no-store" });
+    out.total = Number(all.headers.get("content-range")?.split("/")[1] ?? 0);
+    const since = new Date(Date.now() - 7 * 86_400_000).toISOString();
+    const wk = await fetch(`${base}/rest/v1/waitlist?select=id&created_at=gte.${since}`, { headers: { ...head, Range: "0-0" }, cache: "no-store" });
+    out.week = Number(wk.headers.get("content-range")?.split("/")[1] ?? 0);
+    return out;
+  } catch {
+    return out;
+  }
+}
+
 function ago(ts: number | null): string {
   if (!ts) return "—";
   const s = Math.floor((Date.now() - ts) / 1000);
@@ -133,10 +151,11 @@ const dayLabels = () => {
 export default async function Analytics() {
   if (!(await isAuthed())) return <PasswordGate />;
 
-  const [probes, deployData, vis] = await Promise.all([
+  const [probes, deployData, vis, wl] = await Promise.all([
     Promise.all(FLEET.map(probe)),
     Promise.all(FLEET.map((n) => deploys(n.key))),
     visitorStats(),
+    waitlistCount(),
   ]);
   const dep = Object.fromEntries(deployData.map((d) => [d.key, d]));
 
@@ -195,7 +214,8 @@ export default async function Analytics() {
         </div>
 
         {/* Telemetry row */}
-        <div className="grid grid-cols-2 lg:grid-cols-6 gap-px bg-border border border-border mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-px bg-border border border-border mb-8">
+          <Stat v={wl.total.toLocaleString()} l={`Waitlist${wl.week ? ` · +${wl.week}/7d` : ""}`} accent />
           <Stat v={vis.pv.toLocaleString()} l="Pageviews · 7d" accent />
           <Stat v={vis.visitors.toLocaleString()} l="Visitors · 7d" accent />
           <Stat v={`${online}/${FLEET.length}`} l="Systems online" />
