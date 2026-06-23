@@ -127,7 +127,7 @@ export default function Home() {
 
           <h1
             className="font-display font-extrabold uppercase tracking-[-0.02em] leading-[0.9] text-foreground"
-            style={{ fontSize: "clamp(1.85rem, 7.6vw, 7rem)" }}
+            style={{ fontSize: "clamp(1.7rem, 7vw, 7rem)" }}
           >
             <span className="block rise-1">We engineer</span>
             <span className="block rise-2 animate-gradient-text text-glow">intelligence</span>
