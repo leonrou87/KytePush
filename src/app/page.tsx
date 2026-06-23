@@ -125,10 +125,13 @@ export default function Home() {
             <span className="font-mono text-[11px] uppercase tracking-[0.32em] text-muted">An AI workhouse · Est. MMXXVI</span>
           </div>
 
-          <h1 className="font-display font-extrabold uppercase tracking-[-0.02em] leading-[0.9] text-foreground">
-            <span className="block text-[clamp(2.1rem,8.5vw,7rem)] rise-1">We engineer</span>
-            <span className="block text-[clamp(2.1rem,8.5vw,7rem)] rise-2 animate-gradient-text text-glow">intelligence</span>
-            <span className="block text-[clamp(2.1rem,8.5vw,7rem)] rise-3">at scale.</span>
+          <h1
+            className="font-display font-extrabold uppercase tracking-[-0.02em] leading-[0.9] text-foreground"
+            style={{ fontSize: "clamp(1.85rem, 7.6vw, 7rem)" }}
+          >
+            <span className="block rise-1">We engineer</span>
+            <span className="block rise-2 animate-gradient-text text-glow">intelligence</span>
+            <span className="block rise-3">at scale.</span>
           </h1>
 
           <p className="rise-4 mt-9 text-lg sm:text-xl text-muted leading-relaxed max-w-2xl mx-auto">
