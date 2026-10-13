@@ -27,22 +27,22 @@ export function CookieConsent() {
 
   return (
     <div className="fixed bottom-0 inset-x-0 z-[60] p-4 sm:p-5 flex justify-center pointer-events-none">
-      <div className="pointer-events-auto w-full max-w-3xl border border-border bg-background-2/95 backdrop-blur-xl px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4 shadow-[0_-10px_40px_-12px_rgba(0,0,0,0.8)]">
-        <p className="flex-1 text-[13px] text-muted leading-relaxed">
-          We use cookieless analytics and third-party ad cookies (Google AdSense) to run KYTEPUSH.
+      <div className="pointer-events-auto w-full max-w-3xl glass rounded-2xl px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.6)]">
+        <p className="flex-1 text-[14px] text-ink-soft leading-relaxed">
+          We use cookieless analytics and third-party ad cookies (Google AdSense) to run KytePush.
           See our{" "}
-          <Link href="/privacy" className="text-accent hover-underline">privacy policy</Link>.
+          <Link href="/privacy" className="text-gold hover-underline">privacy policy</Link>.
         </p>
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={() => decide("declined")}
-            className="px-4 py-2 border border-border text-muted hover:text-foreground hover:border-accent/40 text-[11px] font-mono uppercase tracking-[0.14em] transition-colors"
+            className="rounded-full px-4 py-2 border border-hairline text-ink hover:border-white/40 text-[14px] transition-colors"
           >
             Decline
           </button>
           <button
             onClick={() => decide("accepted")}
-            className="px-5 py-2 bg-accent text-background hover:bg-accent-bright text-[11px] font-mono font-semibold uppercase tracking-[0.14em] transition-colors"
+            className="rounded-full px-5 py-2 bg-white text-[#1d1850] hover:bg-gold text-[14px] font-medium transition-colors"
           >
             Accept
           </button>

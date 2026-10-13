@@ -1,91 +1,72 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Archivo } from "next/font/google";
+import { Fraunces, Hanken_Grotesk, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import Script from "next/script";
 import { CookieConsent } from "./components/CookieConsent";
+import { Mark } from "./components/Mark";
+import { domains, products } from "./fleet";
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], axes: ["SOFT", "WONK", "opsz"] });
+const hanken = Hanken_Grotesk({ variable: "--font-hanken", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
-const archivo = Archivo({
-  variable: "--font-archivo",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kytepush.com"),
   title: {
-    default: "KYTEPUSH — An AI workhouse",
-    template: "%s — KYTEPUSH",
+    default: "KytePush — ideas, given lift",
+    template: "%s — KytePush",
   },
   description:
-    "KYTEPUSH is an AI workhouse engineering a fleet of intelligent products that push what software can do. Ten systems online, more shipping every week.",
-  keywords: ["KYTEPUSH", "AI apps", "AI studio", "intelligent software", "Jarvis", "AI workhouse"],
-  applicationName: "KYTEPUSH",
-  authors: [{ name: "KYTEPUSH" }],
+    "KytePush is an applied AI lab that pushes ideas all the way to finished products: eighteen so far across sports, media, everyday life, golf, markets and personal assistants, all built on one shared platform.",
+  keywords: ["KytePush", "AI lab", "AI apps", "applied AI", "AI-native products", "app studio"],
+  applicationName: "KytePush",
+  authors: [{ name: "KytePush" }],
   openGraph: {
     type: "website",
-    siteName: "KYTEPUSH",
-    title: "KYTEPUSH — An AI workhouse",
-    description:
-      "A fleet of intelligent products that push what software can do. Engineering intelligence at scale.",
+    siteName: "KytePush",
+    title: "KytePush — ideas, given lift",
+    description: "An applied AI lab pushing ideas all the way to finished products, across six domains on one shared platform.",
     url: "https://kytepush.com",
   },
   twitter: {
     card: "summary_large_image",
-    title: "KYTEPUSH — An AI workhouse",
-    description: "A fleet of intelligent products. Engineering intelligence at scale.",
+    title: "KytePush — ideas, given lift",
+    description: "An applied AI lab pushing ideas all the way to finished products.",
   },
 };
 
-/* House mark — the kite */
-function Kite({ className = "w-6 h-6" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinejoin="round" strokeLinecap="round">
-      <path d="M12 2.5 L20 9 L12 21.5 L4 9 Z" />
-      <path d="M12 2.5 V21.5 M4 9 H20" strokeWidth={0.9} opacity="0.55" />
-      <path d="M12 21.5 l-2.2 1.5 M12 21.5 l2.2 1.5" strokeWidth={0.9} opacity="0.5" />
-    </svg>
-  );
-}
+const liveCount = products.filter((p) => p.status === "live").length;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${archivo.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col relative">
-        {/* Nav */}
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-xl border-b border-border">
-          <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3 group">
-              <span className="text-accent transition-transform duration-500 group-hover:rotate-[14deg]">
-                <Kite className="w-[22px] h-[22px]" />
-              </span>
-              <span className="font-sans text-[15px] font-bold tracking-[0.34em] text-foreground">KYTEPUSH</span>
+    <html lang="en" className={`${fraunces.variable} ${hanken.variable} ${geistMono.variable} h-full antialiased`}>
+      <body className="relative flex min-h-full flex-col">
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-[#1d1850]">
+          Skip to content
+        </a>
+
+        <nav className="fixed inset-x-0 top-0 z-50 bg-gradient-to-b from-[#0f0c2a]/75 via-[#0f0c2a]/35 to-transparent">
+          <div className="mx-auto flex h-[4.5rem] max-w-[90rem] items-center justify-between px-5 sm:px-10">
+            <Link href="/" className="group flex items-center gap-2.5">
+              <span className="transition-transform duration-700 group-hover:-translate-y-0.5 group-hover:-rotate-6"><Mark className="h-6 w-6" /></span>
+              <span className="font-display text-[1.35rem] text-ink">KytePush</span>
             </Link>
-            <div className="flex items-center gap-7 text-[12px] font-medium text-muted">
-              <Link href="/#fleet" className="hover-underline hover:text-foreground transition-colors hidden sm:block tracking-[0.18em] uppercase">Fleet</Link>
-              <Link href="/#mission" className="hover-underline hover:text-foreground transition-colors hidden sm:block tracking-[0.18em] uppercase">Mission</Link>
-              <span className="hidden md:flex items-center gap-2 font-mono text-[10px] tracking-widest text-muted-dim uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-live pulse-dot" />
-                Systems online
-              </span>
-              <Link
-                href="/#fleet"
-                className="group inline-flex items-center gap-2 px-5 py-2 border border-accent/40 text-accent text-[12px] font-semibold tracking-[0.14em] uppercase hover:bg-accent hover:text-background transition-all duration-300"
-              >
-                Enter
-                <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+            <div className="glass flex items-center gap-1 rounded-full p-1 text-[14px] text-ink-soft">
+              <Link href="/#work" className="hidden rounded-full px-4 py-2 transition-colors hover:text-ink sm:block">Work</Link>
+              <Link href="/#platform" className="hidden rounded-full px-4 py-2 transition-colors hover:text-ink sm:block">Platform</Link>
+              <Link href="/#rules" className="hidden rounded-full px-4 py-2 transition-colors hover:text-ink md:block">How we work</Link>
+              <Link href="/#access" className="rounded-full bg-white px-4 py-2 font-medium text-[#1d1850] transition-colors hover:bg-gold">
+                Early access
               </Link>
             </div>
           </div>
         </nav>
 
-        <main className="flex-1 pt-16 relative z-10">{children}</main>
+        <main id="main" className="relative z-10 flex-1 pt-[4.5rem]">{children}</main>
 
         <CookieConsent />
 
-        {/* Google AdSense */}
         <Script
           id="adsbygoogle-init"
           async
@@ -93,56 +74,56 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
-
-        {/* Fleet analytics beacon */}
         <Script src="/track.js" strategy="afterInteractive" />
 
-
-        {/* Footer */}
-        <footer className="border-t border-border bg-background-2 relative z-10">
-          <div className="max-w-7xl mx-auto px-6 py-16">
-            <div className="grid md:grid-cols-[1.5fr_1fr_1fr] gap-10">
+        <footer className="relative z-10 border-t border-hairline bg-night-deep/80 backdrop-blur-xl">
+          <div className="mx-auto max-w-[90rem] px-5 pt-20 pb-10 sm:px-10">
+            <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_0.8fr]">
               <div>
-                <div className="flex items-center gap-3 mb-5">
-                  <span className="text-accent"><Kite className="w-5 h-5" /></span>
-                  <span className="font-sans font-bold text-sm tracking-[0.34em]">KYTEPUSH</span>
+                <div className="flex items-center gap-2.5">
+                  <Mark className="h-6 w-6" />
+                  <span className="font-display text-[1.35rem]">KytePush</span>
                 </div>
-                <p className="font-display text-2xl font-extrabold uppercase tracking-tight leading-[1.05] text-foreground max-w-sm">
-                  An AI workhouse<br /><span className="text-accent">engineering the future.</span>
-                </p>
-                <p className="text-xs text-muted mt-5 max-w-xs leading-relaxed font-mono tracking-wide">
-                  A fleet of intelligent products, built under one roof and shipped at pace.
+                <p className="mt-5 max-w-xs text-[15px] leading-relaxed text-ink-soft">
+                  An applied AI lab. {liveCount} products live across {domains.length} domains, all built on one platform.
                 </p>
               </div>
-              <div>
-                <h4 className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-dim mb-4">The Fleet</h4>
-                <div className="flex flex-col gap-2.5 text-sm text-muted">
-                  <Link href="/jarvis" className="hover-underline hover:text-foreground transition-colors w-fit">Jarvis</Link>
-                  <a href="https://curated.kytepush.com" className="hover-underline hover:text-foreground transition-colors w-fit">Curated</a>
-                  <a href="https://faultlines.kytepush.com" className="hover-underline hover:text-foreground transition-colors w-fit">Fault Lines</a>
-                  <Link href="/#fleet" className="hover-underline hover:text-accent text-accent/80 transition-colors w-fit">View all →</Link>
-                </div>
-              </div>
-              <div>
-                <h4 className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-dim mb-4">Company</h4>
-                <div className="flex flex-col gap-2.5 text-sm text-muted">
-                  <Link href="/#mission" className="hover-underline hover:text-foreground transition-colors w-fit">Mission</Link>
-                  <Link href="/#fleet" className="hover-underline hover:text-foreground transition-colors w-fit">Products</Link>
-                  <Link href="/privacy" className="hover-underline hover:text-foreground transition-colors w-fit">Privacy</Link>
-                  <Link href="/terms" className="hover-underline hover:text-foreground transition-colors w-fit">Terms</Link>
-                  <Link href="/analytics" className="hover-underline hover:text-foreground transition-colors w-fit inline-flex items-center gap-1.5">
-                    <span className="w-1 h-1 rounded-full bg-accent" /> Analytics
-                  </Link>
-                </div>
-              </div>
+              <FooterCol title="Live now">
+                {products.filter((p) => p.status === "live").slice(0, 7).map((p) => (
+                  <a key={p.name} href={p.href!} className="hover-underline w-fit">{p.name}</a>
+                ))}
+                <Link href="/#work" className="hover-underline w-fit text-gold">All work</Link>
+              </FooterCol>
+              <FooterCol title="Domains">
+                {domains.map((d) => (
+                  <Link key={d.id} href={`/#${d.id}`} className="hover-underline w-fit">{d.name}</Link>
+                ))}
+              </FooterCol>
+              <FooterCol title="Company">
+                <Link href="/#platform" className="hover-underline w-fit">Platform</Link>
+                <Link href="/#rules" className="hover-underline w-fit">How we work</Link>
+                <Link href="/privacy" className="hover-underline w-fit">Privacy</Link>
+                <Link href="/terms" className="hover-underline w-fit">Terms</Link>
+                <Link href="/analytics" className="hover-underline w-fit">Analytics</Link>
+              </FooterCol>
             </div>
-            <div className="mt-14 pt-5 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-muted-dim font-mono uppercase tracking-[0.2em]">
-              <p>© {new Date().getFullYear()} KYTEPUSH — EST. MMXXVI</p>
-              <p>Engineering intelligence · 0.000°N 0.000°W</p>
+            <p className="wordmark mt-24 select-none text-center text-[23vw] md:text-[21vw] 2xl:text-[19rem]" aria-hidden="true">KytePush</p>
+            <div className="mt-10 flex flex-col justify-between gap-3 border-t border-hairline pt-6 text-[13px] text-ink-faint sm:flex-row">
+              <p>© {new Date().getFullYear()} KytePush</p>
+              <p>Made mostly by talking to machines.</p>
             </div>
           </div>
         </footer>
       </body>
     </html>
+  );
+}
+
+function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <h4 className="text-[13px] text-ink-faint">{title}</h4>
+      <div className="mt-4 flex flex-col gap-2.5 text-[15px] text-ink-soft">{children}</div>
+    </div>
   );
 }

@@ -23,29 +23,29 @@ export function WaitlistForm({ source = "home" }: { source?: string }) {
       const data = await res.json().catch(() => ({}));
       if (data.ok) {
         setState("done");
-        setMsg(data.already ? "You're already on the list — good taste." : "You're on the list. Welcome to the fleet.");
+        setMsg(data.already ? "You're already on the list. We'll be in touch at the next launch." : "You're on the list. You'll hear from us at the next launch.");
       } else {
         setState("error");
-        setMsg(data.error || "Something went wrong.");
+        setMsg(data.error || "We couldn't add that email. Check it and try again.");
       }
     } catch {
       setState("error");
-      setMsg("Network error — try again.");
+      setMsg("Couldn't reach the server. Check your connection and try again.");
     }
   }
 
   if (state === "done") {
     return (
-      <div className="mx-auto max-w-md flex items-center justify-center gap-3 border border-live/40 bg-live/5 px-6 py-4">
-        <span className="w-2 h-2 rounded-full bg-live pulse-dot shrink-0" />
-        <span className="font-mono text-[13px] uppercase tracking-[0.12em] text-live">{msg}</span>
+      <div className="flex w-full max-w-md items-center gap-3 glass rounded-2xl px-5 py-4" role="status">
+        <span className="h-2 w-2 shrink-0 rounded-full bg-gold shadow-[0_0_12px_var(--gold)]" />
+        <span className="text-[15px] text-ink">{msg}</span>
       </div>
     );
   }
 
   return (
-    <form onSubmit={submit} className="mx-auto max-w-md">
-      <div className="flex flex-col sm:flex-row gap-3">
+    <form onSubmit={submit} className="w-full max-w-md">
+      <div className="flex flex-col gap-2 glass rounded-[1.6rem] p-2 sm:flex-row sm:rounded-full">
         <input
           type="email"
           required
@@ -53,23 +53,18 @@ export function WaitlistForm({ source = "home" }: { source?: string }) {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@email.com"
           aria-label="Email address"
-          className="flex-1 bg-surface border border-border focus:border-accent/60 px-4 py-3.5 font-mono text-sm text-foreground placeholder:text-muted-dim outline-none transition-colors"
+          className="min-w-0 flex-1 rounded-full bg-transparent px-4 py-3 text-[16px] text-ink placeholder:text-ink-faint outline-none"
         />
         <button
           type="submit"
           disabled={state === "loading"}
-          className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-accent text-background font-semibold text-[13px] uppercase tracking-[0.14em] hover:bg-accent-bright transition-colors duration-300 disabled:opacity-60 whitespace-nowrap"
+          className="whitespace-nowrap rounded-full bg-white px-6 py-3 text-[15px] font-medium text-[#1d1850] transition-colors hover:bg-gold disabled:opacity-60"
         >
-          {state === "loading" ? "Joining…" : "Get early access"}
-          {state !== "loading" && <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>}
+          {state === "loading" ? "Adding you…" : "Get early access"}
         </button>
       </div>
-      {state === "error" && (
-        <p className="mt-3 font-mono text-[11px] uppercase tracking-wider text-rose">⚠ {msg}</p>
-      )}
-      <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-dim">
-        One email. Early access to every product we ship. No spam.
-      </p>
+      {state === "error" && <p className="mt-3 text-[14px] text-rose" role="alert">{msg}</p>}
+      <p className="mt-3 text-[13px] text-ink-faint">One email per launch. Unsubscribe any time.</p>
     </form>
   );
 }
