@@ -27,7 +27,7 @@ export function CookieConsent() {
 
   return (
     <div className="fixed bottom-0 inset-x-0 z-[60] p-4 sm:p-5 flex justify-center pointer-events-none">
-      <div className="pointer-events-auto w-full max-w-3xl glass rounded-2xl px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.6)]">
+      <div className="pointer-events-auto w-full max-w-3xl rounded-2xl border border-hairline bg-[#16123a]/92 backdrop-blur-xl px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.6)]">
         <p className="flex-1 text-[14px] text-ink-soft leading-relaxed">
           We use cookieless analytics and third-party ad cookies (Google AdSense) to run KytePush.
           See our{" "}
