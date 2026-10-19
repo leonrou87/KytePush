@@ -29,8 +29,8 @@ export const products: Product[] = [
     line: "Baseball game stories and picks, with every pick graded in public, win or lose." },
   { name: "Inplay", shot: "/shots/inplay.webp", domain: "sports", status: "live", href: "https://inplay.kytepush.com", host: "inplay.kytepush.com",
     line: "Live projected totals for MLB, NBA, NFL and NHL, with a recorded call at every decision moment." },
-  { name: "Ice", shot: "/shots/ice.webp", domain: "sports", status: "live", href: "https://nhl.kytepush.com", host: "nhl.kytepush.com",
-    line: "Hockey intelligence: model win probabilities set against the market, game by game." },
+  { name: "KytePush Sports", shot: "/shots/sports.webp", domain: "sports", status: "live", href: "https://sports.kytepush.com", host: "sports.kytepush.com",
+    line: "NHL, NBA, NFL and MLB: model win probabilities set against the market, with a lean on every game." },
 
   { name: "Fault Lines", shot: "/shots/faultlines.webp", domain: "media", status: "live", href: "https://faultlines.kytepush.com", host: "faultlines.kytepush.com",
     line: "The day's top stories told neutrally, plus how the left and the right each frame the same facts." },
