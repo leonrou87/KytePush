@@ -25,10 +25,6 @@ export type Product = {
 };
 
 export const products: Product[] = [
-  { name: "DiamondEdge", shot: "/shots/diamondedge.webp", domain: "sports", status: "live", href: "https://diamondedge.kytepush.com", host: "diamondedge.kytepush.com",
-    line: "Baseball game stories and picks, with every pick graded in public, win or lose." },
-  { name: "Inplay", shot: "/shots/inplay.webp", domain: "sports", status: "live", href: "https://inplay.kytepush.com", host: "inplay.kytepush.com",
-    line: "Live projected totals for MLB, NBA, NFL and NHL, with a recorded call at every decision moment." },
   { name: "KytePush Sports", shot: "/shots/sports.webp", domain: "sports", status: "live", href: "https://sports.kytepush.com", host: "sports.kytepush.com",
     line: "NHL, NBA, NFL and MLB: model win probabilities set against the market, with a lean on every game." },
 
